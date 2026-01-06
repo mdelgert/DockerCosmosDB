@@ -1,0 +1,135 @@
+### Configuration
+@baseUrl = https://localhost:8881
+
+### Test Cosmos DB Connection
+POST {{baseUrl}}/api/Cosmos/add-test-record
+Content-Type: application/json
+
+###
+
+### Notes API - Complete CRUD Operations
+
+### 1. Create a new note
+POST {{baseUrl}}/api/Note
+Content-Type: application/json
+
+{
+  "title": "My First Note",
+  "content": "This is the content of my first note. It contains important information."
+}
+
+###
+
+### 2. Create another note for testing
+POST {{baseUrl}}/api/Note
+Content-Type: application/json
+
+{
+  "title": "Shopping List",
+  "content": "1. Milk\n2. Bread\n3. Eggs\n4. Butter\n5. Coffee"
+}
+
+###
+
+### 3. Create a third note
+POST {{baseUrl}}/api/Note
+Content-Type: application/json
+
+{
+  "title": "Meeting Notes",
+  "content": "Team meeting scheduled for Monday at 9 AM. Agenda includes project updates and sprint planning."
+}
+
+###
+
+### 4. Get all notes
+GET {{baseUrl}}/api/Note
+Accept: application/json
+
+###
+
+### 5. Get a specific note by ID (replace {id} with actual note ID from create response)
+GET {{baseUrl}}/api/Note/{id}
+Accept: application/json
+
+###
+
+### 6. Update an existing note (replace {id} with actual note ID)
+PUT {{baseUrl}}/api/Note/{id}
+Content-Type: application/json
+
+{
+  "title": "Updated Note Title",
+  "content": "This note has been updated with new content. The original creation date is preserved."
+}
+
+###
+
+### 7. Update shopping list (replace {id} with shopping list note ID)
+PUT {{baseUrl}}/api/Note/{id}
+Content-Type: application/json
+
+{
+  "title": "Updated Shopping List",
+  "content": "1. Milk\n2. Whole grain bread\n3. Free-range eggs\n4. Organic butter\n5. Premium coffee\n6. Bananas\n7. Yogurt"
+}
+
+###
+
+### 8. Delete a specific note (replace {id} with actual note ID)
+DELETE {{baseUrl}}/api/Note/{id}
+
+###
+
+### 9. Test error handling - Try to get a non-existent note
+GET {{baseUrl}}/api/Note/non-existent-id
+Accept: application/json
+
+###
+
+### 10. Test error handling - Try to update a non-existent note
+PUT {{baseUrl}}/api/Note/non-existent-id
+Content-Type: application/json
+
+{
+  "title": "This should fail",
+  "content": "This note doesn't exist"
+}
+
+###
+
+### 11. Test error handling - Try to delete a non-existent note
+DELETE {{baseUrl}}/api/Note/non-existent-id
+
+###
+
+### 12. Test validation - Create note with missing title
+POST {{baseUrl}}/api/Note
+Content-Type: application/json
+
+{
+  "content": "This note has no title and should fail validation"
+}
+
+###
+
+### 13. Test validation - Create note with empty title
+POST {{baseUrl}}/api/Note
+Content-Type: application/json
+
+{
+  "title": "",
+  "content": "This note has empty title and should fail validation"
+}
+
+###
+
+### 14. Create a note with minimal data
+POST {{baseUrl}}/api/Note
+Content-Type: application/json
+
+{
+  "title": "Minimal Note"
+}
+
+###
