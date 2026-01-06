@@ -9,16 +9,28 @@ var cosmosConnectionString = builder.Configuration["CosmosDb:ConnectionString"];
 var cosmosDatabaseName = builder.Configuration["CosmosDb:DatabaseName"];
 var cosmosContainerName = builder.Configuration["CosmosDb:ContainerName"];
 
-builder.Services.AddSingleton(serviceProvider =>
+// Add DisableServerCertificateValidation for local emulator
+if (builder.Environment.IsDevelopment())
 {
-    var cosmosClient = new CosmosClient(cosmosConnectionString);
-    return cosmosClient;
+    cosmosConnectionString += "DisableServerCertificateValidation=True;";
+}
+
+// Register CosmosClient as singleton (best practice)
+builder.Services.AddSingleton<CosmosClient>(serviceProvider =>
+{
+    return new CosmosClient(cosmosConnectionString);
 });
 
-builder.Services.AddSingleton(serviceProvider =>
+// Register Container as singleton with lazy initialization
+builder.Services.AddSingleton<Container>(serviceProvider =>
 {
     var cosmosClient = serviceProvider.GetRequiredService<CosmosClient>();
-    return cosmosClient.GetDatabase(cosmosDatabaseName).GetContainer(cosmosContainerName);
+    
+    // Get database and container references (will be created on first use)
+    var database = cosmosClient.GetDatabase(cosmosDatabaseName);
+    var container = database.GetContainer(cosmosContainerName);
+    
+    return container;
 });
 
 builder.Services.AddControllers();
@@ -27,6 +39,29 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Initialize Cosmos DB database and container on startup (best practice for production)
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var cosmosClient = scope.ServiceProvider.GetRequiredService<CosmosClient>();
+        
+        // Create database if it doesn't exist
+        var databaseResponse = await cosmosClient.CreateDatabaseIfNotExistsAsync(cosmosDatabaseName);
+        
+        // Create container if it doesn't exist
+        var containerProperties = new ContainerProperties(cosmosContainerName, "/id");
+        await databaseResponse.Database.CreateContainerIfNotExistsAsync(containerProperties);
+        
+        app.Logger.LogInformation("Cosmos DB database and container initialized successfully");
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "Failed to initialize Cosmos DB");
+        // Don't throw - allow app to start anyway for development scenarios
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
