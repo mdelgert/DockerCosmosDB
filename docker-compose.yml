@@ -1,11 +1,33 @@
 services:
+  cosmosdb:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    tty: true
+    restart: always
+    environment:
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10
+      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+    ports:
+      - "8081:8081"
+      - "10251:10251"
+      - "10252:10252"
+      - "10253:10253"
+      - "10254:10254"
+    volumes:
+      - cosmos_data:/data/db
+
   dockercosmosdb.backend:
     image: ${DOCKER_REGISTRY-}dockercosmosdbbackend
     build:
       context: .
       dockerfile: DockerCosmosDB.Backend/Dockerfile
+    depends_on:
+      - cosmosdb
+
   dockercosmosdb.frontend:
     image: ${DOCKER_REGISTRY-}dockercosmosdbfrontend
     build:
       context: .
       dockerfile: DockerCosmosDB.Frontend/Dockerfile
+
+volumes:
+  cosmos_data:
