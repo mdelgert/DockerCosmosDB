@@ -32,14 +32,6 @@ public class CosmosController : ControllerBase
         _container = container;
     }
 
-    //[HttpGet(Name = "Get")]
-    //public IActionResult Get()
-    //{
-    //    _logger.LogInformation("CosmosController Get endpoint was called.");
-    //    var message = new { message = "helloworld CosmosController Get" };
-    //    return Json(message);
-    //}
-
     [HttpPost("add-test-record")]
     public async Task<IActionResult> AddTestRecord()
     {
