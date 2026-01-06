@@ -1,0 +1,11 @@
+services:
+  dockercosmosdb.backend:
+    image: ${DOCKER_REGISTRY-}dockercosmosdbbackend
+    build:
+      context: .
+      dockerfile: DockerCosmosDB.Backend/Dockerfile
+  dockercosmosdb.frontend:
+    image: ${DOCKER_REGISTRY-}dockercosmosdbfrontend
+    build:
+      context: .
+      dockerfile: DockerCosmosDB.Frontend/Dockerfile
