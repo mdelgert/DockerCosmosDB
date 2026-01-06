@@ -7,9 +7,9 @@ namespace DockerCosmosDB.Backend.Controllers;
 
 public class HelloWorldController : Controller
 {
-    private readonly ILogger<WeatherForecastController> _logger;
+    private readonly ILogger<HelloWorldController> _logger;
 
-    public HelloWorldController(ILogger<WeatherForecastController> logger)
+    public HelloWorldController(ILogger<HelloWorldController> logger)
     {
         _logger = logger;
     }
@@ -17,6 +17,8 @@ public class HelloWorldController : Controller
     [HttpGet(Name = "HelloWorldGet")]
     public IActionResult Get()
     {
+        _logger.LogInformation("HelloWorld endpoint was called.");
+
         var message = new { message = "helloworld" };
 
         return Json(message);
