@@ -1,23 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
-using Newtonsoft.Json;
+using DockerCosmosDB.Backend.Models;
 
 namespace DockerCosmosDB.Backend.Controllers;
-
-public class TestRecord
-{
-    [JsonProperty("id")]
-    public string Id { get; set; } = Guid.NewGuid().ToString();
-    
-    [JsonProperty("name")]
-    public string Name { get; set; } = string.Empty;
-    
-    [JsonProperty("description")]
-    public string Description { get; set; } = string.Empty;
-    
-    [JsonProperty("timestamp")]
-    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-}
 
 [ApiController]
 [Route("api/[controller]")]
@@ -39,25 +24,25 @@ public class CosmosController : ControllerBase
         {
             _logger.LogInformation("Adding test record to Cosmos DB");
             
-            var testRecord = new TestRecord
+            var test = new TestModel
             {
                 Name = "Test Record",
                 Description = "This is a test record added to Cosmos DB"
             };
 
             var response = await _container.CreateItemAsync(
-                testRecord, 
-                new PartitionKey(testRecord.Id)
+                test, 
+                new PartitionKey(test.Id)
             );
 
-            _logger.LogInformation($"Test record created with ID: {testRecord.Id}");
+            _logger.LogInformation($"Test record created with ID: {test.Id}");
             
             return Ok(new 
             { 
                 success = true,
-                id = testRecord.Id,
+                id = test.Id,
                 message = "Test record added successfully",
-                record = testRecord,
+                record = test,
                 requestCharge = response.RequestCharge
             });
         }
