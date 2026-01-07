@@ -14,8 +14,7 @@ services:
       - "10253:10253"
       - "10254:10254"
     environment:
-      # AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 3
-      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 1
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 3
       AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
       AZURE_COSMOS_EMULATOR_ENABLE_SQL_API: "true"
       # optional: enable Mongo, Table, Cassandra, Gremlin
@@ -24,7 +23,7 @@ services:
       # AZURE_COSMOS_EMULATOR_ENABLE_TABLE_API: "true"
       # AZURE_COSMOS_EMULATOR_ENABLE_GREMLIN_API: "true"
       # Only needed if accessing the emulator from outside the container
-      AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE: "127.0.0.1"
+      # AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE: "127.0.0.1"
       # Only needed if accessing the emulator from outside the container
     volumes:
       - cosmos-data:/data
