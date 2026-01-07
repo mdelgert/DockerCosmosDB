@@ -1,0 +1,50 @@
+Usage: Microsoft.Azure.Cosmos.Emulator.exe [/Shutdown]  [options]
+/AllowNetworkAccess      Allows access to the Emulator over the network.
+                         Note you must also pass /Key=<key_string> or /KeyFile=<file_name> to enable network access
+/CassandraPort=<port>    Port number to use for the Cassandra Endpoint (API must be enabled first). Default is 10350.
+/ComputePort=<port>      Port number to use for the Compute Interop Gateway service. The Gateway's HTTP endpoint
+                         probe port is calculated as ComputePort + 79. Hence, ComputePort and ComputePort + 79 must
+                         be open and available. The defaults is 8900, 8979.
+/Consistency=<value>     Sets the default consistency level for the account. Value must be one of:
+                         Session, Strong, Eventual, or BoundedStaleness. Default is Session
+/DataPath=<path>         Path to store data files. Defaults to %LOCALAPPDATA%\CosmosDbEmulator
+/DefaultPartitionCount=<count>
+                         Default number of 10GB partitions reserved for a partitioned collection. Default is 25.
+/DirectPorts=<port-list> Comma-separated list of 4 ports to use for direct connectivity. Default is 10251,10252,10253,
+                         10254.
+/DisableRateLimiting     Disables rate limiting simulation
+/EnableCassandraEndpoint Enables Cassandra API
+/EnableGremlinEndpoint   Enables Gremlin API
+/EnableMongoDbEndpoint   Enables the legacy MongoDB API version 3.2; this option will be deprecated in favor of /EnableMongoDbEndpoint=<ver> option
+/EnableMongoDbEndpoint=<ver>
+                         Enables MongoDB API version <ver>. The current supported version are: 3.2, 3.6, 4.0 and 4.2
+/EnablePreview           Enables preview features for the SQL API endpoint
+/EnableRateLimiting      Enables request rate limiting simulation
+/EnableTableEndpoint     Enables Azure Table API
+/FailOnSslCertificateNameMismatch
+                         By default the Emulator regenerates its self-signed SSL certificate, if the certificate's SAN does
+                         not include the Emulator host's domain name, local IPv4 address, 'localhost', and '127.0.0.1'. With
+                         this option, the Emulator will fail at startup instead. You should then use the /GenCert option to
+                         create and install a new self-signed SSL certificate.
+/GenCert[=<dns-names>]   Generates and installs a new self-signed SSL certificate, optionally including a comma-separted
+                         list of additional DNS names for accessing the Emulator over the network.
+/GenKeyFile=<filename>   Generates a new authorization key and save to the specified file.
+                         The generated key can be used with the /Key or /KeyFile options
+/GetStatus               Gets the status of the Azure Cosmos Emulator. The status is indicated by the exit code:
+                         1 = Starting, 2 = Running, 3 = Stopped
+/GremlinPort=<port>      Port number to use for the Gremlin Endpoint (API must be enabled first). Default is 8901.
+/Key=<key_string>        Authorization key for the emulator. Key must be the base 64 encoding of a 64 byte vector.
+/KeyFile=<file_name>     Reads authorization key from the specified file. Use the /GenKeyFile option to generate a keyfile
+/MongoPort=<port>        Port number to use for the Mongo compatibility. Default is 10250.
+/NoExplorer              Don't show Data Explorer on startup.
+/NoFirewall              Don't adjust firewall rules when /AllowNetworkAccess is used.
+/NoUI                    Don't show any emulator UI.
+/PartitionCount=<count>  Total number of 10GB partitions allocated for data storage. Default is 25. Maximum is 250.
+/Port=<port>             Port number to use for the Emulator gateway service. Default is 8081.
+/ResetDataPath[=<path>]  Recursively removes all the files in the specified path; if no path is specified it defaults to %LOCALAPPDATA%\CosmosDbEmulator
+
+/Shutdown                Shutdown the running Emulator instance.
+/StartTraces             Start collecting debug trace logs.
+/StopTraces              Stop collecting debug trace logs.
+/TablePort=<port>        Port number to use for the Azure Table Endpoint (API must be enabled first). Default is 8902.
+/?                       Shows this help message
