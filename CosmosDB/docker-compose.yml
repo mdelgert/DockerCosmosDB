@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  cosmosdb:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+    container_name: cosmosdb-emulator
+    restart: unless-stopped
+    ports:
+      - "8081:8081"     # Data Explorer / SQL API
+      - "10250:10250"
+      - "10251:10251"
+      - "10252:10252"
+      - "10253:10253"
+      - "10254:10254"
+    environment:
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 3
+      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
+      AZURE_COSMOS_EMULATOR_ENABLE_SQL_API: "true"
+      # optional: enable Mongo, Table, Cassandra, Gremlin
+      # AZURE_COSMOS_EMULATOR_ENABLE_MONGO_API: "true"
+      # AZURE_COSMOS_EMULATOR_ENABLE_CASSANDRA_API: "true"
+      # AZURE_COSMOS_EMULATOR_ENABLE_TABLE_API: "true"
+      # AZURE_COSMOS_EMULATOR_ENABLE_GREMLIN_API: "true"
+    volumes:
+      - cosmos-data:/data
+      - cosmos-logs:/var/log/cosmosdb
+    # Required for emulator certificate generation
+    privileged: true
+    tty: true
+
+volumes:
+  cosmos-data:
+  cosmos-logs:
