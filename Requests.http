@@ -8,6 +8,10 @@ Content-Type: application/json
 
 ###
 
+### Get all notes
+GET {{baseUrl}}/api/Note
+Accept: application/json
+
 ### Notes API - Complete CRUD Operations
 
 ### 1. Create a new note
